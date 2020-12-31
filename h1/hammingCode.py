@@ -18,16 +18,18 @@ def parityCheck(code, i):
             else:
                 pi = bin(int(pi, 2) ^ int(k, 2))[2:]
     return pi
-
-# 解码
-def decode(hammingCode):
+def check(hammingCode):
     i = 0
     p = ''
-    while 2**i-1 < len(hammingCode):
+    while 2 ** i - 1 < len(hammingCode):
         p += parityCheck(hammingCode, i)
         i += 1
     print('检错位=', p[::-1])
-    eindex = int(p[::-1], 2) - 1
+    return p[::-1]
+# 解码
+def decode(hammingCode):
+    c1 = check(hammingCode)
+    eindex = int(c1, 2) - 1
     hammingCodeList = list(hammingCode)
     if eindex >= 0:
         hammingCodeList[eindex] = str(int(hammingCodeList[eindex]) ^ 1)
@@ -36,7 +38,7 @@ def decode(hammingCode):
         hammingCodeList[2**r-1] = '.'
         r += 1
     print(''.join(hammingCodeList).replace('.', ''))
-
+    return ''.join(hammingCodeList).replace('.', '')
 # 计算要添加的码
 def P(code):
     r = cr(len(code))
@@ -62,4 +64,4 @@ if __name__ == '__main__':
     hammingCode = hamming(code, addcode)
     print('hammingCode=', hammingCode)
     # decode('01110010000')
-    decode('011100110001010010001001000100011010010100001011011001001010100110100100100100101001010101001001010101010')
+    decode('011100110001010010001001000100011010010100001011011101001010100110100100100100101001010101001001010101010')
